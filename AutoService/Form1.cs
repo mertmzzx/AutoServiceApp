@@ -9,6 +9,7 @@ namespace AutoService
         private readonly ICarService _carService;
         private readonly IServiceRecordService _recordService;
         private readonly IPdfExportService _pdfService;
+        private List<Car> _allCars = new List<Car>();
 
         public Form1(IMechanicService mechService, ICarService carService, IServiceRecordService recordService, IPdfExportService pdfService)
         {
@@ -20,6 +21,20 @@ namespace AutoService
             _pdfService = pdfService;
 
             ConfigureRepairsGrid();
+        }
+
+        protected override async void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            await LoadCarsAsync();
+            if (cmbCars.Items.Count > 0)
+                cmbCars.SelectedIndex = 0;
+
+            await LoadRepairsAsync();
+
+            cmbCars.SelectedIndexChanged += async (_, __) => await LoadRepairsAsync();
+            
         }
 
         private void ConfigureRepairsGrid()
@@ -79,61 +94,50 @@ namespace AutoService
             dgvRepairs.MultiSelect = false;
         }
 
-        private async Task LoadMechanics()
+        private async Task LoadMechanicsAsync()
         {
             var list = await _mechService.GetAllAsync();
             dgvMechanics.DataSource = list;
         }
 
-        private async Task LoadCars()
+        private async Task LoadCarsAsync()
         {
-            if ((await _carService.GetAllAsync()).Count == 0)
-            {
-                await _carService.AddAsync(new Car
-                {
-                    LicensePlate = "TEST123",
-                    VIN = "1HGCM82633A004352",
-                    Make = "TestMake",
-                    Model = "TestModel",
-                    Year = 2020
-                });
-            }
-            var cars = await _carService.GetAllAsync();
+            _allCars = (await _carService.GetAllAsync()).ToList();
+
             cmbCars.DisplayMember = "LicensePlate";
             cmbCars.ValueMember = "Id";
-            cmbCars.DataSource = cars;
+            cmbCars.DataSource = _allCars;
+
+            // set up autocomplete 
+            cmbCars.DropDownStyle = ComboBoxStyle.DropDown;
+            cmbCars.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            cmbCars.AutoCompleteSource = AutoCompleteSource.CustomSource;
+
+            var acs = new AutoCompleteStringCollection();
+            acs.AddRange(_allCars.Select(c => c.LicensePlate).ToArray());
+            cmbCars.AutoCompleteCustomSource = acs;
         }
 
         private async Task LoadRepairsAsync()
         {
-            if (cmbCars.SelectedValue is not int carId) return;
+            dgvRepairs.DataSource = null;
 
-            // 1) Get raw records
-            var records = await _recordService.GetByCarIdAsync(carId);
-
-            // 2) Project into RepairViewModel
-            var vmList = records.Select(r => new RepairViewModel
+            if (cmbCars.SelectedValue is int carId)
             {
-                Id = r.Id,
-                Date = r.Date,
-                Description = r.Description,
-                Cost = r.Cost,
-                CarPlate = r.Car.LicensePlate,
-                MechanicName = r.Mechanic.Name
-            })
-            .ToList();
+                var records = await _recordService.GetByCarIdAsync(carId);
+                var vmList = records.Select(r => new RepairViewModel
+                {
+                    Id = r.Id,
+                    Date = r.Date,
+                    Description = r.Description,
+                    Cost = r.Cost,
+                    CarPlate = r.Car.LicensePlate,
+                    MechanicName = r.Mechanic.Name
+                }).ToList();
 
-            // 3) Bind to DataGridView
-            dgvRepairs.AutoGenerateColumns = false;
-            dgvRepairs.DataSource = vmList;
-        }
-        protected override async void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            // Do one then the other
-            await LoadMechanics();
-            await LoadCars();
+                dgvRepairs.AutoGenerateColumns = false;
+                dgvRepairs.DataSource = vmList;
+            }
         }
 
         // Mechanic Tab
@@ -141,7 +145,7 @@ namespace AutoService
         {
             using var dlg = new AddMechanicForm(_mechService);
             if (dlg.ShowDialog() == DialogResult.OK)
-                LoadMechanics();
+                LoadMechanicsAsync();
         }
 
         private void btnEditMechanic_Click(object sender, EventArgs e)
@@ -150,7 +154,7 @@ namespace AutoService
             {
                 using var dlg = new AddMechanicForm(_mechService, mech);
                 if (dlg.ShowDialog() == DialogResult.OK)
-                    LoadMechanics();
+                    LoadMechanicsAsync();
             }
         }
 
@@ -159,13 +163,13 @@ namespace AutoService
             if (dgvMechanics.CurrentRow?.DataBoundItem is Mechanic mech)
             {
                 await _mechService.DeleteAsync(mech.Id);
-                LoadMechanics();
+                LoadMechanicsAsync();
             }
         }
 
         private void btnRefreshMechanics_Click(object sender, EventArgs e)
         {
-            LoadMechanics();
+            LoadMechanicsAsync();
         }
 
         //Repairs Tab
@@ -179,7 +183,7 @@ namespace AutoService
             await LoadRepairsAsync();
         }
 
-        private void btnAddRepair_Click(object sender, EventArgs e)
+        private async void btnAddRepair_Click(object sender, EventArgs e)
         {
             if (cmbCars.SelectedValue is not int carId)
                 return;
@@ -187,7 +191,10 @@ namespace AutoService
             using var dlg = new AddRepairForm(_recordService, _mechService, _carService);
 
             if (dlg.ShowDialog() == DialogResult.OK)
-                _ = LoadRepairsAsync();
+            { 
+                await LoadRepairsAsync();
+                await LoadCarsAsync();
+            }
         }
 
         private async void btnDeleteRepair_Click(object sender, EventArgs e)

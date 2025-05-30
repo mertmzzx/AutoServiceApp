@@ -1,15 +1,5 @@
 ﻿using AutoService.Models;
 using AutoService.Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
 namespace AutoService
 {
     public partial class AddRepairForm : Form
@@ -30,18 +20,18 @@ namespace AutoService
             _mechSvc = mechSvc;
             _carSvc = carSvc;
 
+            this.Load += AddRepairForm_Load;
+
             // Dissapering effect
             rbNewCar.CheckedChanged += rbNewCar_CheckedChanged;
             rbExistingCar.CheckedChanged += rbNewCar_CheckedChanged;
             rbExistingCar.Checked = true;
             rbNewCar_CheckedChanged(rbNewCar, EventArgs.Empty);
 
-            LoadMechanics();
-            LoadCars(carId);
             dtpDate.Value = DateTime.Today;
         }
 
-        private async void LoadMechanics()
+        private async Task LoadMechanicsAsync()
         {
             var mechs = await _mechSvc.GetAllAsync();
             cmbMechanics.DisplayMember = "Name";
@@ -49,7 +39,7 @@ namespace AutoService
             cmbMechanics.DataSource = mechs;
         }
 
-        private async void LoadCars(int? preselectId)
+        private async Task LoadCarsAsync(int? preselectId)
         {
             var cars = await _carSvc.GetAllAsync();
             cmbExistingCars.DisplayMember = "LicensePlate";
@@ -57,6 +47,15 @@ namespace AutoService
             cmbExistingCars.DataSource = cars;
             if (preselectId.HasValue)
                 cmbExistingCars.SelectedValue = preselectId.Value;
+        }
+
+        private async void AddRepairForm_Load(object sender, EventArgs e)
+        {
+            // 1st do mechanics, wait for it…
+            await LoadMechanicsAsync();
+
+            // then do cars
+            await LoadCarsAsync(_carId);
         }
 
         private void rbNewCar_CheckedChanged(object sender, EventArgs e)
