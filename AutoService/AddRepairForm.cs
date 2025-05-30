@@ -89,7 +89,7 @@ namespace AutoService
                 // 2) Use selected existing car
                 if (cmbExistingCars.SelectedValue is not int existingId)
                 {
-                    MessageBox.Show("Please select a car or choose New Car.");
+                    MessageBox.Show("Please choose a car or add a new car.");
                     return;
                 }
                 carId = existingId;

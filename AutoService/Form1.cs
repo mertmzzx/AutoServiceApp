@@ -8,19 +8,20 @@ namespace AutoService
         private readonly IMechanicService _mechService;
         private readonly ICarService _carService;
         private readonly IServiceRecordService _recordService;
-        private readonly IPdfExportService _pdfService;
+        private readonly IExportService _exportService;
         private List<Car> _allCars = new List<Car>();
 
-        public Form1(IMechanicService mechService, ICarService carService, IServiceRecordService recordService, IPdfExportService pdfService)
+        public Form1(IMechanicService mechService, ICarService carService, IServiceRecordService recordService, IExportService exportService)
         {
             InitializeComponent();
 
             _mechService = mechService;
             _carService = carService;
             _recordService = recordService;
-            _pdfService = pdfService;
+            _exportService = exportService;
 
             ConfigureRepairsGrid();
+            ConfigureHistoryGrid();
         }
 
         protected override async void OnLoad(EventArgs e)
@@ -34,7 +35,7 @@ namespace AutoService
             await LoadRepairsAsync();
 
             cmbCars.SelectedIndexChanged += async (_, __) => await LoadRepairsAsync();
-            
+
         }
 
         private void ConfigureRepairsGrid()
@@ -92,6 +93,45 @@ namespace AutoService
 
             dgvRepairs.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvRepairs.MultiSelect = false;
+        }
+
+        private void ConfigureHistoryGrid()
+        {
+            dgvHistory.Columns.Clear();
+            dgvHistory.AutoGenerateColumns = false;
+            dgvHistory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvHistory.MultiSelect = false;
+
+            // Date
+            dgvHistory.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = nameof(RepairViewModel.Date),
+                HeaderText = "Date",
+                DefaultCellStyle = { Format = "d" },
+                Width = 80
+            });
+            // Description
+            dgvHistory.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = nameof(RepairViewModel.Description),
+                HeaderText = "Description",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            });
+            // Cost
+            dgvHistory.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = nameof(RepairViewModel.Cost),
+                HeaderText = "Cost",
+                DefaultCellStyle = { Format = "C" },
+                Width = 80
+            });
+            // Mechanic
+            dgvHistory.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = nameof(RepairViewModel.MechanicName),
+                HeaderText = "Mechanic",
+                Width = 120
+            });
         }
 
         private async Task LoadMechanicsAsync()
@@ -191,7 +231,7 @@ namespace AutoService
             using var dlg = new AddRepairForm(_recordService, _mechService, _carService);
 
             if (dlg.ShowDialog() == DialogResult.OK)
-            { 
+            {
                 await LoadRepairsAsync();
                 await LoadCarsAsync();
             }
@@ -210,7 +250,7 @@ namespace AutoService
         {
             if (dgvRepairs.CurrentRow?.DataBoundItem is RepairViewModel vm)
             {
-                var bytes = await _pdfService.ExportServiceRecordAsync(vm.Id);
+                var bytes = await _exportService.ExportServiceRecordAsync(vm.Id);
                 using var dlg = new SaveFileDialog
                 {
                     Filter = "PDF files (*.pdf)|*.pdf",
@@ -234,6 +274,140 @@ namespace AutoService
                         MessageBoxIcon.Information
                     );
                 }
+            }
+        }
+
+        private async void btnSearchHistory_Click(object sender, EventArgs e)
+        {
+            dgvHistory.DataSource = null;
+
+            var key = txtSearchCar.Text.Trim();
+            if (string.IsNullOrEmpty(key))
+            {
+                MessageBox.Show("Please enter a license plate or VIN.");
+                return;
+            }
+
+            // Try to find the car by plate or VIN in your cached list
+            var car = _allCars
+              .FirstOrDefault(c =>
+                 c.LicensePlate.Equals(key, StringComparison.OrdinalIgnoreCase) ||
+                 c.VIN.Equals(key, StringComparison.OrdinalIgnoreCase));
+
+            if (car == null)
+            {
+                MessageBox.Show($"No car found matching “{key}”.");
+                return;
+            }
+
+            // Load its history
+            var records = await _recordService.GetByCarIdAsync(car.Id);
+
+            // Project to the same RepairViewModel
+            var vmList = records.Select(r => new RepairViewModel
+            {
+                Date = r.Date,
+                Description = r.Description,
+                Cost = r.Cost,
+                MechanicName = r.Mechanic.Name
+            })
+            .ToList();
+
+            dgvHistory.DataSource = vmList;
+        }
+
+        private async void btnExportRecordPdf_Click(object sender, EventArgs e)
+        {
+            if (dgvHistory.DataSource is not List<RepairViewModel> list || !list.Any())
+            {
+                MessageBox.Show("No records to export.");
+                return;
+            }
+
+            // We need the car ID again: look it up by the search key
+            var key = txtSearchCar.Text.Trim();
+            var car = _allCars.FirstOrDefault(c =>
+                c.LicensePlate.Equals(key, StringComparison.OrdinalIgnoreCase) ||
+                c.VIN.Equals(key, StringComparison.OrdinalIgnoreCase));
+
+            if (car == null) return; // guard
+
+            var bytes = await _exportService.ExportServiceHistoryAsync(car.Id);
+            if (bytes == null || bytes.Length == 0)
+            {
+                MessageBox.Show("Nothing to export.");
+                return;
+            }
+
+            using var dlg = new SaveFileDialog
+            {
+                Filter = "PDF files (*.pdf)|*.pdf",
+                Title = "Save Full Service History",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                FileName = $"{key}_History.pdf"
+            };
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                File.WriteAllBytes(dlg.FileName, bytes);
+                MessageBox.Show($"Exported to:\n{dlg.FileName}", "Done",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private async void btnExportRecordExcel_Click(object sender, EventArgs e)
+        {
+            var key = txtSearchCar.Text.Trim();
+            if (string.IsNullOrEmpty(key))
+            {
+                MessageBox.Show("Please enter a license plate or VIN.",
+                                "Export to Excel", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Find the car from the in-memory list
+            var car = _allCars.FirstOrDefault(c =>
+                c.LicensePlate.Equals(key, StringComparison.OrdinalIgnoreCase) ||
+                c.VIN.Equals(key, StringComparison.OrdinalIgnoreCase));
+
+            if (car == null)
+            {
+                MessageBox.Show($"No car matches “{key}”.",
+                                "Export to Excel", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                // Call the service to build an Excel workbook of that car's full history
+                var bytes = await _exportService.ExportServiceRecordExcelAsync(car.Id);
+                if (bytes == null || bytes.Length == 0)
+                {
+                    MessageBox.Show("No history to export.",
+                                    "Export to Excel", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                // Show Save-As dialog
+                using var dlg = new SaveFileDialog
+                {
+                    Filter = "Excel files (*.xlsx)|*.xlsx",
+                    Title = "Save Service History to Excel",
+                    InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                    FileName = $"{key}_History.xlsx"
+                };
+
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    File.WriteAllBytes(dlg.FileName, bytes);
+                    MessageBox.Show($"Excel saved to:\n{dlg.FileName}",
+                                    "Export Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Export failed:\n{ex.Message}",
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

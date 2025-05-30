@@ -1,5 +1,3 @@
-using System;
-using System.Windows.Forms;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,7 +31,7 @@ namespace AutoService
                     services.AddScoped<ICarService, CarService>();
                     services.AddScoped<IMechanicService, MechanicService>();
                     services.AddScoped<IServiceRecordService, ServiceRecordService>();
-                    services.AddScoped<IPdfExportService ,PdfExportService>();
+                    services.AddScoped<IExportService ,ExportService>();
 
                     // 3) Register your main form so it can get DI-injected
                     services.AddScoped<Form1>();
