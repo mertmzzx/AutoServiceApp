@@ -24,6 +24,12 @@
             grpRevenueByMechanic = new GroupBox();
             revenueChart = new LiveChartsCore.SkiaSharpView.WinForms.CartesianChart();
             pnlAnalyticsPlaceholder = new Panel();
+            btnResetFilter = new Button();
+            lblDtpTo = new Label();
+            lblDtpFrom = new Label();
+            dtpFrom = new DateTimePicker();
+            dtpTo = new DateTimePicker();
+            btnApplyFilter = new Button();
             tabMechanics = new TabPage();
             btnRefreshMechanics = new Button();
             btnDeleteMechanic = new Button();
@@ -49,6 +55,7 @@
             tabDashboard.SuspendLayout();
             tblDashboard.SuspendLayout();
             grpRevenueByMechanic.SuspendLayout();
+            pnlAnalyticsPlaceholder.SuspendLayout();
             tabMechanics.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvMechanics).BeginInit();
             tabRepairs.SuspendLayout();
@@ -67,7 +74,7 @@
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(987, 436);
+            tabControl1.Size = new Size(1034, 475);
             tabControl1.TabIndex = 0;
             // 
             // tabDashboard
@@ -76,7 +83,7 @@
             tabDashboard.Location = new Point(4, 29);
             tabDashboard.Name = "tabDashboard";
             tabDashboard.Padding = new Padding(3);
-            tabDashboard.Size = new Size(979, 403);
+            tabDashboard.Size = new Size(1026, 442);
             tabDashboard.TabIndex = 0;
             tabDashboard.Text = "Dashboard";
             tabDashboard.UseVisualStyleBackColor = true;
@@ -96,7 +103,7 @@
             tblDashboard.RowCount = 2;
             tblDashboard.RowStyles.Add(new RowStyle());
             tblDashboard.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tblDashboard.Size = new Size(973, 397);
+            tblDashboard.Size = new Size(1020, 436);
             tblDashboard.TabIndex = 0;
             // 
             // lblTotalRevenueValue
@@ -109,7 +116,7 @@
             lblTotalRevenueValue.Location = new Point(20, 20);
             lblTotalRevenueValue.Margin = new Padding(10, 10, 10, 20);
             lblTotalRevenueValue.Name = "lblTotalRevenueValue";
-            lblTotalRevenueValue.Size = new Size(933, 41);
+            lblTotalRevenueValue.Size = new Size(980, 41);
             lblTotalRevenueValue.TabIndex = 0;
             lblTotalRevenueValue.Text = "Total Revenue: 0,00 лв.";
             // 
@@ -121,7 +128,7 @@
             grpRevenueByMechanic.Location = new Point(15, 86);
             grpRevenueByMechanic.Margin = new Padding(5);
             grpRevenueByMechanic.Name = "grpRevenueByMechanic";
-            grpRevenueByMechanic.Size = new Size(561, 296);
+            grpRevenueByMechanic.Size = new Size(590, 335);
             grpRevenueByMechanic.TabIndex = 1;
             grpRevenueByMechanic.TabStop = false;
             grpRevenueByMechanic.Text = "Revenue by Mechanic";
@@ -132,18 +139,76 @@
             revenueChart.Location = new Point(3, 28);
             revenueChart.MatchAxesScreenDataRatio = false;
             revenueChart.Name = "revenueChart";
-            revenueChart.Size = new Size(555, 265);
+            revenueChart.Size = new Size(584, 304);
             revenueChart.TabIndex = 0;
             // 
             // pnlAnalyticsPlaceholder
             // 
             pnlAnalyticsPlaceholder.BackColor = Color.WhiteSmoke;
+            pnlAnalyticsPlaceholder.Controls.Add(btnResetFilter);
+            pnlAnalyticsPlaceholder.Controls.Add(lblDtpTo);
+            pnlAnalyticsPlaceholder.Controls.Add(lblDtpFrom);
+            pnlAnalyticsPlaceholder.Controls.Add(dtpFrom);
+            pnlAnalyticsPlaceholder.Controls.Add(dtpTo);
+            pnlAnalyticsPlaceholder.Controls.Add(btnApplyFilter);
             pnlAnalyticsPlaceholder.Dock = DockStyle.Fill;
-            pnlAnalyticsPlaceholder.Location = new Point(586, 86);
+            pnlAnalyticsPlaceholder.Location = new Point(615, 86);
             pnlAnalyticsPlaceholder.Margin = new Padding(5);
             pnlAnalyticsPlaceholder.Name = "pnlAnalyticsPlaceholder";
-            pnlAnalyticsPlaceholder.Size = new Size(372, 296);
+            pnlAnalyticsPlaceholder.Size = new Size(390, 335);
             pnlAnalyticsPlaceholder.TabIndex = 2;
+            // 
+            // btnResetFilter
+            // 
+            btnResetFilter.Location = new Point(234, 154);
+            btnResetFilter.Name = "btnResetFilter";
+            btnResetFilter.Size = new Size(94, 32);
+            btnResetFilter.TabIndex = 5;
+            btnResetFilter.Text = "Reset";
+            btnResetFilter.UseVisualStyleBackColor = true;
+            // 
+            // lblDtpTo
+            // 
+            lblDtpTo.AutoSize = true;
+            lblDtpTo.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblDtpTo.Location = new Point(30, 43);
+            lblDtpTo.Name = "lblDtpTo";
+            lblDtpTo.Size = new Size(38, 28);
+            lblDtpTo.TabIndex = 3;
+            lblDtpTo.Text = "To:";
+            // 
+            // lblDtpFrom
+            // 
+            lblDtpFrom.AutoSize = true;
+            lblDtpFrom.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblDtpFrom.Location = new Point(4, 3);
+            lblDtpFrom.Name = "lblDtpFrom";
+            lblDtpFrom.Size = new Size(64, 28);
+            lblDtpFrom.TabIndex = 1;
+            lblDtpFrom.Text = "From:";
+            // 
+            // dtpFrom
+            // 
+            dtpFrom.Location = new Point(74, 3);
+            dtpFrom.Name = "dtpFrom";
+            dtpFrom.Size = new Size(192, 27);
+            dtpFrom.TabIndex = 0;
+            // 
+            // dtpTo
+            // 
+            dtpTo.Location = new Point(74, 45);
+            dtpTo.Name = "dtpTo";
+            dtpTo.Size = new Size(192, 27);
+            dtpTo.TabIndex = 2;
+            // 
+            // btnApplyFilter
+            // 
+            btnApplyFilter.Location = new Point(44, 154);
+            btnApplyFilter.Name = "btnApplyFilter";
+            btnApplyFilter.Size = new Size(94, 32);
+            btnApplyFilter.TabIndex = 4;
+            btnApplyFilter.Text = "Apply";
+            btnApplyFilter.UseVisualStyleBackColor = true;
             // 
             // tabMechanics
             // 
@@ -155,7 +220,7 @@
             tabMechanics.Location = new Point(4, 29);
             tabMechanics.Name = "tabMechanics";
             tabMechanics.Padding = new Padding(3);
-            tabMechanics.Size = new Size(979, 403);
+            tabMechanics.Size = new Size(1026, 442);
             tabMechanics.TabIndex = 0;
             tabMechanics.Text = "Mechanics";
             tabMechanics.UseVisualStyleBackColor = true;
@@ -220,7 +285,7 @@
             tabRepairs.Location = new Point(4, 29);
             tabRepairs.Name = "tabRepairs";
             tabRepairs.Padding = new Padding(3);
-            tabRepairs.Size = new Size(979, 403);
+            tabRepairs.Size = new Size(1026, 442);
             tabRepairs.TabIndex = 1;
             tabRepairs.Text = "Repairs";
             tabRepairs.UseVisualStyleBackColor = true;
@@ -292,7 +357,7 @@
             tabHistory.Location = new Point(4, 29);
             tabHistory.Name = "tabHistory";
             tabHistory.Padding = new Padding(3);
-            tabHistory.Size = new Size(979, 403);
+            tabHistory.Size = new Size(1026, 442);
             tabHistory.TabIndex = 2;
             tabHistory.Text = "Service History";
             tabHistory.UseVisualStyleBackColor = true;
@@ -374,8 +439,10 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(987, 436);
+            ClientSize = new Size(1034, 475);
             Controls.Add(tabControl1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "Form1";
             Text = "Form1";
             tabControl1.ResumeLayout(false);
@@ -383,6 +450,8 @@
             tblDashboard.ResumeLayout(false);
             tblDashboard.PerformLayout();
             grpRevenueByMechanic.ResumeLayout(false);
+            pnlAnalyticsPlaceholder.ResumeLayout(false);
+            pnlAnalyticsPlaceholder.PerformLayout();
             tabMechanics.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvMechanics).EndInit();
             tabRepairs.ResumeLayout(false);
@@ -423,5 +492,11 @@
         private GroupBox grpRevenueByMechanic;
         private Panel pnlAnalyticsPlaceholder;
         private LiveChartsCore.SkiaSharpView.WinForms.CartesianChart revenueChart;
+        private Label lblDtpTo;
+        private DateTimePicker dtpTo;
+        private Label lblDtpFrom;
+        private DateTimePicker dtpFrom;
+        private Button btnApplyFilter;
+        private Button btnResetFilter;
     }
 }

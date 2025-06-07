@@ -22,6 +22,25 @@ namespace AutoService
         {
             InitializeComponent();
 
+            btnApplyFilter.Click += async (_, __) =>
+            {
+                await LoadRevenueByMechanicChartAsync(
+                    dtpFrom.Value.Date,
+                    dtpTo.Value.Date.AddDays(1).AddTicks(-1) // include whole “To” day
+                );
+            };
+
+            btnResetFilter.Click += async (_, __) =>
+            {
+                // 1) Restore your default window (e.g. last 30 days)
+                dtpFrom.Value = DateTime.Today.AddMonths(-1);
+                dtpTo.Value = DateTime.Today;
+
+                // 2) Reload the chart with those defaults
+                await LoadRevenueByMechanicChartAsync(dtpFrom.Value, dtpTo.Value);
+            };
+
+
             _mechService = mechService;
             _carService = carService;
             _recordService = recordService;
@@ -35,8 +54,12 @@ namespace AutoService
         {
             base.OnLoad(e);
 
+            //Default date values
+            dtpFrom.Value = DateTime.Today.AddMonths(-1);
+            dtpTo.Value = DateTime.Today;
+
             await LoadTotalRevenueAsync();
-            await LoadRevenueByMechanicChartAsync();
+            await LoadRevenueByMechanicChartAsync(dtpFrom.Value, dtpTo.Value);
 
             await LoadCarsAsync();
             if (cmbCars.Items.Count > 0)
@@ -436,10 +459,14 @@ namespace AutoService
             lblTotalRevenueValue.Text = $"Total Revenue: {total:C}";
         }
 
-        private async Task LoadRevenueByMechanicChartAsync()
+        private async Task LoadRevenueByMechanicChartAsync(DateTime? from = null, DateTime? to = null)
         {
             // Get every record (with Mechanic & Car included)
             var allRecords = await _recordService.GetAllAsync();
+
+            if (from.HasValue) allRecords = allRecords.Where(r => r.Date >= from.Value).ToList();
+            if (to.HasValue) allRecords = allRecords.Where(r => r.Date <= to.Value).ToList();
+
             Debug.WriteLine($"Total service records fetched: {allRecords.Count}");
             // Discard any records that have no Mechanic, then group by r.Mechanic.Name
             var byMechanic = allRecords
@@ -496,6 +523,5 @@ namespace AutoService
         }
     };
         }
-
     }
 }
