@@ -29,6 +29,22 @@ namespace AutoService.Services
             }    
         }
 
+        public async Task<List<ServiceRecord>> GetAllAsync()
+        {
+            return await _db.ServiceRecords
+                    .Include(r => r.Mechanic)
+                    .Include(r => r.Car)
+                    .ToListAsync();
+        }
+        public async Task<List<ServiceRecord>> GetAllWithRelatedAsync()
+        {
+            // Use Include() to load related data in one query
+            return await _db.ServiceRecords
+                .Include(r => r.Car)
+                .Include(r => r.Mechanic)
+                .ToListAsync();
+        }
+
         public Task<List<ServiceRecord>> GetByCarIdAsync(int carId) =>
             _db.ServiceRecords
                 .Include(r => r.Mechanic)

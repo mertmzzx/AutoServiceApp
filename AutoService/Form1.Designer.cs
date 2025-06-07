@@ -1,5 +1,4 @@
-﻿
-namespace AutoService
+﻿namespace AutoService
 {
     partial class Form1
     {
@@ -19,6 +18,12 @@ namespace AutoService
         private void InitializeComponent()
         {
             tabControl1 = new TabControl();
+            tabDashboard = new TabPage();
+            tblDashboard = new TableLayoutPanel();
+            lblTotalRevenueValue = new Label();
+            grpRevenueByMechanic = new GroupBox();
+            revenueChart = new LiveChartsCore.SkiaSharpView.WinForms.CartesianChart();
+            pnlAnalyticsPlaceholder = new Panel();
             tabMechanics = new TabPage();
             btnRefreshMechanics = new Button();
             btnDeleteMechanic = new Button();
@@ -39,7 +44,11 @@ namespace AutoService
             btnSearchHistory = new Button();
             txtSearchCar = new TextBox();
             lblSearchVinOrPlate = new Label();
+            tableLayoutPanel1 = new TableLayoutPanel();
             tabControl1.SuspendLayout();
+            tabDashboard.SuspendLayout();
+            tblDashboard.SuspendLayout();
+            grpRevenueByMechanic.SuspendLayout();
             tabMechanics.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvMechanics).BeginInit();
             tabRepairs.SuspendLayout();
@@ -50,6 +59,7 @@ namespace AutoService
             // 
             // tabControl1
             // 
+            tabControl1.Controls.Add(tabDashboard);
             tabControl1.Controls.Add(tabMechanics);
             tabControl1.Controls.Add(tabRepairs);
             tabControl1.Controls.Add(tabHistory);
@@ -57,8 +67,83 @@ namespace AutoService
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(870, 355);
+            tabControl1.Size = new Size(987, 436);
             tabControl1.TabIndex = 0;
+            // 
+            // tabDashboard
+            // 
+            tabDashboard.Controls.Add(tblDashboard);
+            tabDashboard.Location = new Point(4, 29);
+            tabDashboard.Name = "tabDashboard";
+            tabDashboard.Padding = new Padding(3);
+            tabDashboard.Size = new Size(979, 403);
+            tabDashboard.TabIndex = 0;
+            tabDashboard.Text = "Dashboard";
+            tabDashboard.UseVisualStyleBackColor = true;
+            // 
+            // tblDashboard
+            // 
+            tblDashboard.ColumnCount = 2;
+            tblDashboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
+            tblDashboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            tblDashboard.Controls.Add(lblTotalRevenueValue, 0, 0);
+            tblDashboard.Controls.Add(grpRevenueByMechanic, 0, 1);
+            tblDashboard.Controls.Add(pnlAnalyticsPlaceholder, 1, 1);
+            tblDashboard.Dock = DockStyle.Fill;
+            tblDashboard.Location = new Point(3, 3);
+            tblDashboard.Name = "tblDashboard";
+            tblDashboard.Padding = new Padding(10);
+            tblDashboard.RowCount = 2;
+            tblDashboard.RowStyles.Add(new RowStyle());
+            tblDashboard.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tblDashboard.Size = new Size(973, 397);
+            tblDashboard.TabIndex = 0;
+            // 
+            // lblTotalRevenueValue
+            // 
+            lblTotalRevenueValue.AutoSize = true;
+            tblDashboard.SetColumnSpan(lblTotalRevenueValue, 2);
+            lblTotalRevenueValue.Dock = DockStyle.Top;
+            lblTotalRevenueValue.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            lblTotalRevenueValue.ForeColor = Color.DarkBlue;
+            lblTotalRevenueValue.Location = new Point(20, 20);
+            lblTotalRevenueValue.Margin = new Padding(10, 10, 10, 20);
+            lblTotalRevenueValue.Name = "lblTotalRevenueValue";
+            lblTotalRevenueValue.Size = new Size(933, 41);
+            lblTotalRevenueValue.TabIndex = 0;
+            lblTotalRevenueValue.Text = "Total Revenue: 0,00 лв.";
+            // 
+            // grpRevenueByMechanic
+            // 
+            grpRevenueByMechanic.Controls.Add(revenueChart);
+            grpRevenueByMechanic.Dock = DockStyle.Fill;
+            grpRevenueByMechanic.Font = new Font("Segoe UI Semibold", 11F);
+            grpRevenueByMechanic.Location = new Point(15, 86);
+            grpRevenueByMechanic.Margin = new Padding(5);
+            grpRevenueByMechanic.Name = "grpRevenueByMechanic";
+            grpRevenueByMechanic.Size = new Size(561, 296);
+            grpRevenueByMechanic.TabIndex = 1;
+            grpRevenueByMechanic.TabStop = false;
+            grpRevenueByMechanic.Text = "Revenue by Mechanic";
+            // 
+            // revenueChart
+            // 
+            revenueChart.Dock = DockStyle.Fill;
+            revenueChart.Location = new Point(3, 28);
+            revenueChart.MatchAxesScreenDataRatio = false;
+            revenueChart.Name = "revenueChart";
+            revenueChart.Size = new Size(555, 265);
+            revenueChart.TabIndex = 0;
+            // 
+            // pnlAnalyticsPlaceholder
+            // 
+            pnlAnalyticsPlaceholder.BackColor = Color.WhiteSmoke;
+            pnlAnalyticsPlaceholder.Dock = DockStyle.Fill;
+            pnlAnalyticsPlaceholder.Location = new Point(586, 86);
+            pnlAnalyticsPlaceholder.Margin = new Padding(5);
+            pnlAnalyticsPlaceholder.Name = "pnlAnalyticsPlaceholder";
+            pnlAnalyticsPlaceholder.Size = new Size(372, 296);
+            pnlAnalyticsPlaceholder.TabIndex = 2;
             // 
             // tabMechanics
             // 
@@ -70,7 +155,7 @@ namespace AutoService
             tabMechanics.Location = new Point(4, 29);
             tabMechanics.Name = "tabMechanics";
             tabMechanics.Padding = new Padding(3);
-            tabMechanics.Size = new Size(862, 322);
+            tabMechanics.Size = new Size(979, 403);
             tabMechanics.TabIndex = 0;
             tabMechanics.Text = "Mechanics";
             tabMechanics.UseVisualStyleBackColor = true;
@@ -135,7 +220,7 @@ namespace AutoService
             tabRepairs.Location = new Point(4, 29);
             tabRepairs.Name = "tabRepairs";
             tabRepairs.Padding = new Padding(3);
-            tabRepairs.Size = new Size(862, 322);
+            tabRepairs.Size = new Size(979, 403);
             tabRepairs.TabIndex = 1;
             tabRepairs.Text = "Repairs";
             tabRepairs.UseVisualStyleBackColor = true;
@@ -207,7 +292,7 @@ namespace AutoService
             tabHistory.Location = new Point(4, 29);
             tabHistory.Name = "tabHistory";
             tabHistory.Padding = new Padding(3);
-            tabHistory.Size = new Size(862, 322);
+            tabHistory.Size = new Size(979, 403);
             tabHistory.TabIndex = 2;
             tabHistory.Text = "Service History";
             tabHistory.UseVisualStyleBackColor = true;
@@ -271,15 +356,33 @@ namespace AutoService
             lblSearchVinOrPlate.TabIndex = 0;
             lblSearchVinOrPlate.Text = "License Plate or VIN:";
             // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.ColumnCount = 2;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Dock = DockStyle.Bottom;
+            tableLayoutPanel1.Location = new Point(3, 409);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Size = new Size(984, 8);
+            tableLayoutPanel1.TabIndex = 5;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(870, 355);
+            ClientSize = new Size(987, 436);
             Controls.Add(tabControl1);
             Name = "Form1";
             Text = "Form1";
             tabControl1.ResumeLayout(false);
+            tabDashboard.ResumeLayout(false);
+            tblDashboard.ResumeLayout(false);
+            tblDashboard.PerformLayout();
+            grpRevenueByMechanic.ResumeLayout(false);
             tabMechanics.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvMechanics).EndInit();
             tabRepairs.ResumeLayout(false);
@@ -293,13 +396,7 @@ namespace AutoService
         #endregion
 
         private TabControl tabControl1;
-        private TabPage tabMechanics;
         private TabPage tabRepairs;
-        private Button btnRefreshMechanics;
-        private Button btnDeleteMechanic;
-        private Button btnEditMechanic;
-        private Button btnAddMechanic;
-        private DataGridView dgvMechanics;
         private TabPage tabHistory;
         private ComboBox cmbCars;
         private Button btnExportRepair;
@@ -313,5 +410,18 @@ namespace AutoService
         private Button btnSearchHistory;
         private TextBox txtSearchCar;
         private Button btnExportRecordExcel;
+        private TabPage tabMechanics;
+        private Button btnRefreshMechanics;
+        private Button btnDeleteMechanic;
+        private Button btnEditMechanic;
+        private Button btnAddMechanic;
+        private DataGridView dgvMechanics;
+        private TabPage tabDashboard;
+        private TableLayoutPanel tblDashboard;
+        private Label lblTotalRevenueValue;
+        private TableLayoutPanel tableLayoutPanel1;
+        private GroupBox grpRevenueByMechanic;
+        private Panel pnlAnalyticsPlaceholder;
+        private LiveChartsCore.SkiaSharpView.WinForms.CartesianChart revenueChart;
     }
 }

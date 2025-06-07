@@ -1,5 +1,12 @@
 using AutoService.Models;
 using AutoService.Services;
+using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore;
+using SkiaSharp;
+using System.Diagnostics;
+
+
 
 namespace AutoService
 {
@@ -27,6 +34,9 @@ namespace AutoService
         protected override async void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            await LoadTotalRevenueAsync();
+            await LoadRevenueByMechanicChartAsync();
 
             await LoadCarsAsync();
             if (cmbCars.Items.Count > 0)
@@ -133,6 +143,8 @@ namespace AutoService
                 Width = 120
             });
         }
+
+
 
         private async Task LoadMechanicsAsync()
         {
@@ -277,6 +289,8 @@ namespace AutoService
             }
         }
 
+        // Service Records Tab
+
         private async void btnSearchHistory_Click(object sender, EventArgs e)
         {
             dgvHistory.DataSource = null;
@@ -410,5 +424,78 @@ namespace AutoService
                                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        // Dashboard
+
+        private async Task LoadTotalRevenueAsync()
+        {
+            // Suppose your service returns List<ServiceRecord>.
+            // ServiceRecord has .Cost (decimal).
+            var allRecords = await _recordService.GetAllAsync();
+            decimal total = allRecords.Sum(r => r.Cost);
+            lblTotalRevenueValue.Text = $"Total Revenue: {total:C}";
+        }
+
+        private async Task LoadRevenueByMechanicChartAsync()
+        {
+            // Get every record (with Mechanic & Car included)
+            var allRecords = await _recordService.GetAllAsync();
+            Debug.WriteLine($"Total service records fetched: {allRecords.Count}");
+            // Discard any records that have no Mechanic, then group by r.Mechanic.Name
+            var byMechanic = allRecords
+                .Where(r => r.Mechanic != null)                    // skip null‐Mechanic
+                .GroupBy(r => r.Mechanic.Name)
+                .Select(g => new
+                {
+                    MechanicName = g.Key,
+                    TotalRevenue = (double)g.Sum(r => r.Cost)
+                })
+                .OrderByDescending(x => x.TotalRevenue)
+                .ToList();
+
+            // If there are no valid mechanics, clear the chart
+            if (byMechanic.Count == 0)
+            {
+                revenueChart.Series = Array.Empty<ISeries>();
+                return;
+            }
+
+            // Extract labels & values
+            var labels = byMechanic.Select(x => x.MechanicName).ToArray();
+            var values = byMechanic.Select(x => x.TotalRevenue).ToArray();
+
+            // Build the LiveCharts series
+            var series = new ColumnSeries<double>
+            {
+                Values = values,
+                Name = "Revenue"
+                // → you can style Fill, Stroke, etc. here if you want
+            };
+
+            // Assign to the chart
+            revenueChart.Series = new ISeries[] { series };
+
+            // Configure the axes
+            revenueChart.XAxes = new[]
+            {
+        new Axis
+        {
+            Labels          = labels,
+            LabelsRotation  = 15,
+            Name            = "Mechanic",
+            NamePaint       = new SolidColorPaint(SKColor.Parse("000000"))
+        }
+    };
+
+            revenueChart.YAxes = new[]
+            {
+        new Axis
+        {
+            Name      = "Revenue (лв.)",
+            NamePaint = new SolidColorPaint(SKColor.Parse("000000"))
+        }
+    };
+        }
+
     }
 }
