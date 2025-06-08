@@ -5,12 +5,16 @@ using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore;
 using SkiaSharp;
 using System.Diagnostics;
+using MaterialSkin;
+using MaterialSkin.Controls;
+using System.Drawing;
+using System.Windows.Forms;
 
 
 
 namespace AutoService
 {
-    public partial class Form1 : Form
+    public partial class Form1 : MaterialForm
     {
         private readonly IMechanicService _mechService;
         private readonly ICarService _carService;
@@ -21,6 +25,33 @@ namespace AutoService
         public Form1(IMechanicService mechService, ICarService carService, IServiceRecordService recordService, IExportService exportService)
         {
             InitializeComponent();
+
+            this.Padding = new Padding(0, this.Padding.Top, 0, this.Padding.Bottom);
+
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = true; 
+            // extra safety
+            this.MinimumSize = this.MaximumSize = this.Size;
+
+            var skin = MaterialSkinManager.Instance;
+            skin.AddFormToManage(this);
+            skin.Theme = MaterialSkinManager.Themes.LIGHT;
+            skin.ColorScheme = new ColorScheme(
+                Primary.Blue600,   // AppBar              
+                Primary.Blue900,   // Shadow / DarkPrimary (unused)    
+                Primary.Blue100,   // LightPrimary                    
+                Accent.LightBlue200,
+                TextShade.WHITE
+            );
+
+            MaterialTabSelector1.BackColor = skin.ColorScheme.LightPrimaryColor;
+            foreach (TabPage page in MaterialTabControl1.TabPages)
+                page.BackColor = Color.WhiteSmoke;
+
+            StyleDataGridView(dgvMechanics);
+            StyleDataGridView(dgvRepairs);
+            StyleDataGridView(dgvHistory);
 
             btnApplyFilter.Click += async (_, __) =>
             {
@@ -54,6 +85,18 @@ namespace AutoService
         {
             base.OnLoad(e);
 
+            // Forced Labels Properties Because Otherwise They Do Not Apply
+            lblTotalRevenueValue.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            lblTotalRevenueValue.ForeColor = Color.DarkBlue;
+
+            lblDtpFrom.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblDtpFrom.ForeColor = Color.DarkBlue;
+            lblDtpTo.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblDtpTo.ForeColor = Color.DarkBlue;
+
+            lblSearchVinOrPlate.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            lblSearchVinOrPlate.ForeColor = Color.DarkBlue;
+
             //Default date values
             dtpFrom.Value = DateTime.Today.AddMonths(-1);
             dtpTo.Value = DateTime.Today;
@@ -70,6 +113,46 @@ namespace AutoService
             cmbCars.SelectedIndexChanged += async (_, __) => await LoadRepairsAsync();
 
         }
+
+
+        private void StyleDataGridView(DataGridView grid)
+        {
+            var scheme = MaterialSkinManager.Instance.ColorScheme;
+
+            // allow custom header styling
+            grid.EnableHeadersVisualStyles = false;
+
+            // Headers
+            grid.ColumnHeadersDefaultCellStyle.BackColor = scheme.PrimaryColor;
+            grid.ColumnHeadersDefaultCellStyle.ForeColor = scheme.TextColor;
+            grid.ColumnHeadersDefaultCellStyle.SelectionBackColor = scheme.DarkPrimaryColor;
+            grid.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            grid.RowHeadersDefaultCellStyle.BackColor = scheme.PrimaryColor;
+            grid.RowHeadersDefaultCellStyle.ForeColor = scheme.TextColor;
+
+            //Rows & Selection
+            grid.DefaultCellStyle.BackColor = Color.White;
+            grid.AlternatingRowsDefaultCellStyle.BackColor = scheme.LightPrimaryColor;
+            grid.DefaultCellStyle.ForeColor = Color.Black;
+            grid.DefaultCellStyle.SelectionBackColor = scheme.AccentColor;
+            grid.DefaultCellStyle.SelectionForeColor = scheme.TextColor;
+
+            //Grid lines 
+            grid.GridColor = Color.LightGray;
+
+            // Font tweaks 
+            grid.DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
+
+            // Clean up 
+            grid.RowHeadersVisible = false;
+            grid.ReadOnly = true;
+            grid.AllowUserToAddRows = false;
+            grid.AllowUserToDeleteRows = false;
+
+            grid.Refresh();
+        }
+
 
         private void ConfigureRepairsGrid()
         {
@@ -173,6 +256,16 @@ namespace AutoService
         {
             var list = await _mechService.GetAllAsync();
             dgvMechanics.DataSource = list;
+
+            // Columns Sizes and Fill
+            dgvMechanics.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            var idCol = dgvMechanics.Columns[nameof(Mechanic.Id)];
+            idCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            
+            idCol.MinimumWidth = 50;
+            dgvMechanics.Columns[nameof(Mechanic.Name)].FillWeight = 2;
+            dgvMechanics.Columns[nameof(Mechanic.Phone)].FillWeight = 1;
+
         }
 
         private async Task LoadCarsAsync()

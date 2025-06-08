@@ -176,6 +176,14 @@
           }
         }
       },
+      "MaterialSkin.2/2.3.1": {
+        "runtime": {
+          "lib/net5.0-windows7.0/MaterialSkin.dll": {
+            "assemblyVersion": "2.3.1.0",
+            "fileVersion": "2.3.1.0"
+          }
+        }
+      },
       "Microsoft.Bcl.AsyncInterfaces/7.0.0": {
         "runtime": {
           "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
@@ -1937,6 +1945,13 @@
       "sha512": "sha512-620/ZcHt4gaDfeAjKd/dWc9TJvBwku+A5Go8dbEKyAZCCW1x4o2IpNf2RvnYw3El6aDCcPtQMd9YIEw8fEhS2g==",
       "path": "livechartscore.skiasharpview.winforms/2.0.0-rc5.4",
       "hashPath": "livechartscore.skiasharpview.winforms.2.0.0-rc5.4.nupkg.sha512"
+    },
+    "MaterialSkin.2/2.3.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-w2vFxLNk4InCDU7pXDfBqPfv55HhBtuu8HRfEqQpeS3sNTS1pUzDs/hS0b5JW2/tKvt+P1of9OINP8a9omWDBg==",
+      "path": "materialskin.2/2.3.1",
+      "hashPath": "materialskin.2.2.3.1.nupkg.sha512"
     },
     "Microsoft.Bcl.AsyncInterfaces/7.0.0": {
       "type": "package",

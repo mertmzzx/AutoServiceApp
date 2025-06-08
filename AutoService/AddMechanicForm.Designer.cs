@@ -1,4 +1,6 @@
-﻿namespace AutoService
+﻿
+
+namespace AutoService
 {
     partial class AddMechanicForm
     {
