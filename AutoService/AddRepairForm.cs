@@ -1,8 +1,11 @@
 ﻿using AutoService.Models;
 using AutoService.Services;
+using MaterialSkin;
+using MaterialSkin.Controls;
+
 namespace AutoService
 {
-    public partial class AddRepairForm : Form
+    public partial class AddRepairForm : MaterialForm
     {
         private readonly IServiceRecordService _recordSvc;
         private readonly IMechanicService _mechSvc;
@@ -16,6 +19,16 @@ namespace AutoService
             int? carId = null)
         {
             InitializeComponent();
+
+            var mgr = MaterialSkinManager.Instance;
+            mgr.AddFormToManage(this);
+            mgr.Theme = MaterialSkinManager.Themes.LIGHT;     
+            mgr.ColorScheme = new ColorScheme(
+                Primary.Blue600, Primary.Blue900,
+                Primary.Blue100, Accent.LightBlue200,
+                TextShade.WHITE
+            );
+
             _recordSvc = recordSvc;
             _mechSvc = mechSvc;
             _carSvc = carSvc;

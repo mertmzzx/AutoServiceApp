@@ -1,4 +1,6 @@
-﻿namespace AutoService
+﻿using MaterialSkin.Controls;
+
+namespace AutoService
 {
     partial class AddRepairForm
     {
@@ -31,29 +33,29 @@
             components = new System.ComponentModel.Container();
             cmbMechanics = new ComboBox();
             dtpDate = new DateTimePicker();
-            txtDescription = new TextBox();
+            txtDescription = new MaterialTextBox();
             nudCost = new NumericUpDown();
-            btnSave = new Button();
-            btnCancel = new Button();
+            btnSave = new MaterialButton();
+            btnCancel = new MaterialButton();
             cmbExistingCars = new ComboBox();
-            lblExistingCar = new Label();
-            rbExistingCar = new RadioButton();
-            rbNewCar = new RadioButton();
+            lblExistingCar = new MaterialLabel();
+            rbExistingCar = new MaterialRadioButton();
+            rbNewCar = new MaterialRadioButton();
             panelNewCarFields = new Panel();
-            lvlYear = new Label();
+            lvlYear = new MaterialLabel();
             nudYear = new NumericUpDown();
-            lblModel = new Label();
-            txtModel = new TextBox();
-            lblMake = new Label();
-            txtMake = new TextBox();
-            lblVIN = new Label();
-            txtVIN = new TextBox();
-            lblLicensePlate = new Label();
-            txtLicensePlate = new TextBox();
+            lblModel = new MaterialLabel();
+            txtModel = new MaterialTextBox();
+            lblMake = new MaterialLabel();
+            txtMake = new MaterialTextBox();
+            lblVIN = new MaterialLabel();
+            txtVIN = new MaterialTextBox();
+            lblLicensePlate = new MaterialLabel();
+            txtLicensePlate = new MaterialTextBox();
             contextMenuStrip1 = new ContextMenuStrip(components);
-            lblMechanic = new Label();
-            lblCost = new Label();
-            lblDescription = new Label();
+            lblMechanic = new MaterialLabel();
+            lblCost = new MaterialLabel();
+            lblDescription = new MaterialLabel();
             ((System.ComponentModel.ISupportInitialize)nudCost).BeginInit();
             panelNewCarFields.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudYear).BeginInit();
@@ -62,29 +64,38 @@
             // cmbMechanics
             // 
             cmbMechanics.FormattingEnabled = true;
-            cmbMechanics.Location = new Point(462, 57);
+            cmbMechanics.Location = new Point(452, 119);
             cmbMechanics.Name = "cmbMechanics";
             cmbMechanics.Size = new Size(151, 28);
             cmbMechanics.TabIndex = 0;
             // 
             // dtpDate
             // 
-            dtpDate.Location = new Point(743, 185);
+            dtpDate.Location = new Point(665, 188);
             dtpDate.Name = "dtpDate";
             dtpDate.Size = new Size(193, 27);
             dtpDate.TabIndex = 1;
             // 
             // txtDescription
             // 
-            txtDescription.Location = new Point(670, 57);
-            txtDescription.Multiline = true;
+            txtDescription.AnimateReadOnly = false;
+            txtDescription.BorderStyle = BorderStyle.None;
+            txtDescription.Depth = 0;
+            txtDescription.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtDescription.LeadingIcon = null;
+            txtDescription.Location = new Point(665, 123);
+            txtDescription.MaxLength = 50;
+            txtDescription.MouseState = MaterialSkin.MouseState.OUT;
+            txtDescription.Multiline = false;
             txtDescription.Name = "txtDescription";
-            txtDescription.Size = new Size(333, 112);
+            txtDescription.Size = new Size(350, 50);
             txtDescription.TabIndex = 2;
+            txtDescription.Text = "";
+            txtDescription.TrailingIcon = null;
             // 
             // nudCost
             // 
-            nudCost.Location = new Point(462, 139);
+            nudCost.Location = new Point(452, 191);
             nudCost.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
             nudCost.Name = "nudCost";
             nudCost.Size = new Size(151, 27);
@@ -92,28 +103,48 @@
             // 
             // btnSave
             // 
-            btnSave.Location = new Point(583, 275);
+            btnSave.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnSave.Density = MaterialButton.MaterialButtonDensity.Default;
+            btnSave.Depth = 0;
+            btnSave.HighEmphasis = true;
+            btnSave.Icon = null;
+            btnSave.Location = new Point(711, 277);
+            btnSave.Margin = new Padding(4, 6, 4, 6);
+            btnSave.MouseState = MaterialSkin.MouseState.HOVER;
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(106, 44);
+            btnSave.NoAccentTextColor = Color.Empty;
+            btnSave.Size = new Size(64, 36);
             btnSave.TabIndex = 4;
             btnSave.Text = "Save";
+            btnSave.Type = MaterialButton.MaterialButtonType.Contained;
+            btnSave.UseAccentColor = false;
             btnSave.UseVisualStyleBackColor = true;
             btnSave.Click += btnSave_Click;
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(783, 277);
+            btnCancel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnCancel.Density = MaterialButton.MaterialButtonDensity.Default;
+            btnCancel.Depth = 0;
+            btnCancel.HighEmphasis = true;
+            btnCancel.Icon = null;
+            btnCancel.Location = new Point(892, 277);
+            btnCancel.Margin = new Padding(4, 6, 4, 6);
+            btnCancel.MouseState = MaterialSkin.MouseState.HOVER;
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(106, 42);
+            btnCancel.NoAccentTextColor = Color.Empty;
+            btnCancel.Size = new Size(77, 36);
             btnCancel.TabIndex = 5;
             btnCancel.Text = "Cancel";
+            btnCancel.Type = MaterialButton.MaterialButtonType.Contained;
+            btnCancel.UseAccentColor = false;
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
             // 
             // cmbExistingCars
             // 
             cmbExistingCars.FormattingEnabled = true;
-            cmbExistingCars.Location = new Point(12, 73);
+            cmbExistingCars.Location = new Point(40, 145);
             cmbExistingCars.Name = "cmbExistingCars";
             cmbExistingCars.Size = new Size(159, 28);
             cmbExistingCars.TabIndex = 6;
@@ -121,19 +152,26 @@
             // lblExistingCar
             // 
             lblExistingCar.AutoSize = true;
-            lblExistingCar.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblExistingCar.Location = new Point(12, 45);
+            lblExistingCar.Depth = 0;
+            lblExistingCar.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblExistingCar.Location = new Point(40, 123);
+            lblExistingCar.MouseState = MaterialSkin.MouseState.HOVER;
             lblExistingCar.Name = "lblExistingCar";
-            lblExistingCar.Size = new Size(169, 25);
+            lblExistingCar.Size = new Size(143, 19);
             lblExistingCar.TabIndex = 7;
             lblExistingCar.Text = "Choose existing car:";
             // 
             // rbExistingCar
             // 
             rbExistingCar.AutoSize = true;
-            rbExistingCar.Location = new Point(12, 12);
+            rbExistingCar.Depth = 0;
+            rbExistingCar.Location = new Point(12, 79);
+            rbExistingCar.Margin = new Padding(0);
+            rbExistingCar.MouseLocation = new Point(-1, -1);
+            rbExistingCar.MouseState = MaterialSkin.MouseState.HOVER;
             rbExistingCar.Name = "rbExistingCar";
-            rbExistingCar.Size = new Size(107, 24);
+            rbExistingCar.Ripple = true;
+            rbExistingCar.Size = new Size(119, 37);
             rbExistingCar.TabIndex = 8;
             rbExistingCar.TabStop = true;
             rbExistingCar.Text = "Existing Car";
@@ -142,9 +180,14 @@
             // rbNewCar
             // 
             rbNewCar.AutoSize = true;
-            rbNewCar.Location = new Point(12, 129);
+            rbNewCar.Depth = 0;
+            rbNewCar.Location = new Point(12, 191);
+            rbNewCar.Margin = new Padding(0);
+            rbNewCar.MouseLocation = new Point(-1, -1);
+            rbNewCar.MouseState = MaterialSkin.MouseState.HOVER;
             rbNewCar.Name = "rbNewCar";
-            rbNewCar.Size = new Size(86, 24);
+            rbNewCar.Ripple = true;
+            rbNewCar.Size = new Size(94, 37);
             rbNewCar.TabIndex = 9;
             rbNewCar.TabStop = true;
             rbNewCar.Text = "New Car";
@@ -162,24 +205,26 @@
             panelNewCarFields.Controls.Add(txtVIN);
             panelNewCarFields.Controls.Add(lblLicensePlate);
             panelNewCarFields.Controls.Add(txtLicensePlate);
-            panelNewCarFields.Location = new Point(12, 159);
+            panelNewCarFields.Location = new Point(26, 231);
             panelNewCarFields.Name = "panelNewCarFields";
-            panelNewCarFields.Size = new Size(383, 203);
+            panelNewCarFields.Size = new Size(383, 233);
             panelNewCarFields.TabIndex = 10;
             // 
             // lvlYear
             // 
             lvlYear.AutoSize = true;
-            lvlYear.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lvlYear.Location = new Point(220, 76);
+            lvlYear.Depth = 0;
+            lvlYear.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lvlYear.Location = new Point(220, 91);
+            lvlYear.MouseState = MaterialSkin.MouseState.HOVER;
             lvlYear.Name = "lvlYear";
-            lvlYear.Size = new Size(46, 23);
+            lvlYear.Size = new Size(37, 19);
             lvlYear.TabIndex = 9;
             lvlYear.Text = "Year:";
             // 
             // nudYear
             // 
-            nudYear.Location = new Point(220, 99);
+            nudYear.Location = new Point(220, 113);
             nudYear.Maximum = new decimal(new int[] { 2100, 0, 0, 0 });
             nudYear.Minimum = new decimal(new int[] { 1900, 0, 0, 0 });
             nudYear.Name = "nudYear";
@@ -190,70 +235,118 @@
             // lblModel
             // 
             lblModel.AutoSize = true;
-            lblModel.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblModel.Depth = 0;
+            lblModel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblModel.Location = new Point(220, 7);
+            lblModel.MouseState = MaterialSkin.MouseState.HOVER;
             lblModel.Name = "lblModel";
-            lblModel.Size = new Size(62, 23);
+            lblModel.Size = new Size(49, 19);
             lblModel.TabIndex = 7;
             lblModel.Text = "Model:";
             // 
             // txtModel
             // 
-            txtModel.Location = new Point(220, 30);
+            txtModel.AnimateReadOnly = false;
+            txtModel.BorderStyle = BorderStyle.None;
+            txtModel.Depth = 0;
+            txtModel.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtModel.LeadingIcon = null;
+            txtModel.Location = new Point(220, 29);
+            txtModel.MaxLength = 50;
+            txtModel.MouseState = MaterialSkin.MouseState.OUT;
+            txtModel.Multiline = false;
             txtModel.Name = "txtModel";
-            txtModel.Size = new Size(125, 27);
+            txtModel.Size = new Size(125, 50);
             txtModel.TabIndex = 6;
+            txtModel.Text = "";
+            txtModel.TrailingIcon = null;
             // 
             // lblMake
             // 
             lblMake.AutoSize = true;
-            lblMake.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblMake.Location = new Point(14, 147);
+            lblMake.Depth = 0;
+            lblMake.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblMake.Location = new Point(14, 161);
+            lblMake.MouseState = MaterialSkin.MouseState.HOVER;
             lblMake.Name = "lblMake";
-            lblMake.Size = new Size(55, 23);
+            lblMake.Size = new Size(44, 19);
             lblMake.TabIndex = 5;
             lblMake.Text = "Make:";
             // 
             // txtMake
             // 
-            txtMake.Location = new Point(14, 170);
+            txtMake.AnimateReadOnly = false;
+            txtMake.BorderStyle = BorderStyle.None;
+            txtMake.Depth = 0;
+            txtMake.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtMake.LeadingIcon = null;
+            txtMake.Location = new Point(14, 183);
+            txtMake.MaxLength = 50;
+            txtMake.MouseState = MaterialSkin.MouseState.OUT;
+            txtMake.Multiline = false;
             txtMake.Name = "txtMake";
-            txtMake.Size = new Size(125, 27);
+            txtMake.Size = new Size(125, 50);
             txtMake.TabIndex = 4;
+            txtMake.Text = "";
+            txtMake.TrailingIcon = null;
             // 
             // lblVIN
             // 
             lblVIN.AutoSize = true;
-            lblVIN.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblVIN.Location = new Point(14, 76);
+            lblVIN.Depth = 0;
+            lblVIN.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblVIN.Location = new Point(14, 82);
+            lblVIN.MouseState = MaterialSkin.MouseState.HOVER;
             lblVIN.Name = "lblVIN";
-            lblVIN.Size = new Size(43, 23);
+            lblVIN.Size = new Size(30, 19);
             lblVIN.TabIndex = 3;
             lblVIN.Text = "VIN:";
             // 
             // txtVIN
             // 
-            txtVIN.Location = new Point(14, 99);
+            txtVIN.AnimateReadOnly = false;
+            txtVIN.BorderStyle = BorderStyle.None;
+            txtVIN.Depth = 0;
+            txtVIN.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtVIN.LeadingIcon = null;
+            txtVIN.Location = new Point(14, 104);
+            txtVIN.MaxLength = 50;
+            txtVIN.MouseState = MaterialSkin.MouseState.OUT;
+            txtVIN.Multiline = false;
             txtVIN.Name = "txtVIN";
-            txtVIN.Size = new Size(125, 27);
+            txtVIN.Size = new Size(125, 50);
             txtVIN.TabIndex = 2;
+            txtVIN.Text = "";
+            txtVIN.TrailingIcon = null;
             // 
             // lblLicensePlate
             // 
             lblLicensePlate.AutoSize = true;
-            lblLicensePlate.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblLicensePlate.Depth = 0;
+            lblLicensePlate.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblLicensePlate.Location = new Point(14, 7);
+            lblLicensePlate.MouseState = MaterialSkin.MouseState.HOVER;
             lblLicensePlate.Name = "lblLicensePlate";
-            lblLicensePlate.Size = new Size(112, 23);
+            lblLicensePlate.Size = new Size(99, 19);
             lblLicensePlate.TabIndex = 1;
             lblLicensePlate.Text = "License Plate:";
             // 
             // txtLicensePlate
             // 
+            txtLicensePlate.AnimateReadOnly = false;
+            txtLicensePlate.BorderStyle = BorderStyle.None;
+            txtLicensePlate.Depth = 0;
+            txtLicensePlate.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtLicensePlate.LeadingIcon = null;
             txtLicensePlate.Location = new Point(14, 30);
+            txtLicensePlate.MaxLength = 50;
+            txtLicensePlate.MouseState = MaterialSkin.MouseState.OUT;
+            txtLicensePlate.Multiline = false;
             txtLicensePlate.Name = "txtLicensePlate";
-            txtLicensePlate.Size = new Size(125, 27);
+            txtLicensePlate.Size = new Size(125, 50);
             txtLicensePlate.TabIndex = 0;
+            txtLicensePlate.Text = "";
+            txtLicensePlate.TrailingIcon = null;
             // 
             // contextMenuStrip1
             // 
@@ -264,30 +357,36 @@
             // lblMechanic
             // 
             lblMechanic.AutoSize = true;
-            lblMechanic.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblMechanic.Location = new Point(462, 29);
+            lblMechanic.Depth = 0;
+            lblMechanic.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblMechanic.Location = new Point(452, 97);
+            lblMechanic.MouseState = MaterialSkin.MouseState.HOVER;
             lblMechanic.Name = "lblMechanic";
-            lblMechanic.Size = new Size(155, 25);
+            lblMechanic.Size = new Size(131, 19);
             lblMechanic.TabIndex = 12;
             lblMechanic.Text = "Choose mechanic:";
             // 
             // lblCost
             // 
             lblCost.AutoSize = true;
-            lblCost.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblCost.Location = new Point(462, 107);
+            lblCost.Depth = 0;
+            lblCost.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblCost.Location = new Point(452, 166);
+            lblCost.MouseState = MaterialSkin.MouseState.HOVER;
             lblCost.Name = "lblCost";
-            lblCost.Size = new Size(53, 25);
+            lblCost.Size = new Size(40, 19);
             lblCost.TabIndex = 13;
             lblCost.Text = "Price:";
             // 
             // lblDescription
             // 
             lblDescription.AutoSize = true;
-            lblDescription.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblDescription.Location = new Point(670, 29);
+            lblDescription.Depth = 0;
+            lblDescription.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblDescription.Location = new Point(665, 97);
+            lblDescription.MouseState = MaterialSkin.MouseState.HOVER;
             lblDescription.Name = "lblDescription";
-            lblDescription.Size = new Size(106, 25);
+            lblDescription.Size = new Size(85, 19);
             lblDescription.TabIndex = 14;
             lblDescription.Text = "Description:";
             // 
@@ -295,7 +394,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1015, 374);
+            ClientSize = new Size(1050, 478);
             Controls.Add(lblDescription);
             Controls.Add(lblCost);
             Controls.Add(lblMechanic);
@@ -311,7 +410,7 @@
             Controls.Add(dtpDate);
             Controls.Add(cmbMechanics);
             Name = "AddRepairForm";
-            Text = "AddRepairForm";
+            Text = "Add Repair";
             ((System.ComponentModel.ISupportInitialize)nudCost).EndInit();
             panelNewCarFields.ResumeLayout(false);
             panelNewCarFields.PerformLayout();
@@ -324,28 +423,28 @@
 
         private ComboBox cmbMechanics;
         private DateTimePicker dtpDate;
-        private TextBox txtDescription;
+        private MaterialTextBox txtDescription;
         private NumericUpDown nudCost;
-        private Button btnSave;
-        private Button btnCancel;
+        private MaterialButton btnSave;
+        private MaterialButton btnCancel;
         private ComboBox cmbExistingCars;
-        private Label lblExistingCar;
-        private RadioButton rbExistingCar;
-        private RadioButton rbNewCar;
+        private MaterialLabel lblExistingCar;
+        private MaterialRadioButton rbExistingCar;
+        private MaterialRadioButton rbNewCar;
         private Panel panelNewCarFields;
-        private Label lblLicensePlate;
-        private TextBox txtLicensePlate;
-        private Label lblVIN;
-        private TextBox txtVIN;
+        private MaterialLabel lblLicensePlate;
+        private MaterialTextBox txtLicensePlate;
+        private MaterialLabel lblVIN;
+        private MaterialTextBox txtVIN;
         private ContextMenuStrip contextMenuStrip1;
-        private Label lvlYear;
+        private MaterialLabel lvlYear;
         private NumericUpDown nudYear;
-        private Label lblModel;
-        private TextBox txtModel;
-        private Label lblMake;
-        private TextBox txtMake;
-        private Label lblMechanic;
-        private Label lblCost;
-        private Label lblDescription;
+        private MaterialLabel lblModel;
+        private MaterialTextBox txtModel;
+        private MaterialLabel lblMake;
+        private MaterialTextBox txtMake;
+        private MaterialLabel lblMechanic;
+        private MaterialLabel lblCost;
+        private MaterialLabel lblDescription;
     }
 }
