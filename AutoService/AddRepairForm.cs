@@ -64,10 +64,8 @@ namespace AutoService
 
         private async void AddRepairForm_Load(object sender, EventArgs e)
         {
-            // 1st do mechanics, wait for it…
             await LoadMechanicsAsync();
 
-            // then do cars
             await LoadCarsAsync(_carId);
         }
 

@@ -1,18 +1,11 @@
 ﻿using AutoService.Models;
 using AutoService.Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using MaterialSkin;
+using MaterialSkin.Controls;
 
 namespace AutoService
 {
-    public partial class AddMechanicForm : Form
+    public partial class AddMechanicForm : MaterialForm
     {
         private readonly IMechanicService _mechanicService;
         private Mechanic? _mechanic;
@@ -20,6 +13,15 @@ namespace AutoService
         public AddMechanicForm(IMechanicService mechanicService, Mechanic? mechanic = null)
         {
             InitializeComponent();
+
+            var mgr = MaterialSkinManager.Instance;
+            mgr.AddFormToManage(this);
+            mgr.Theme = MaterialSkinManager.Themes.LIGHT;  
+            mgr.ColorScheme = new ColorScheme(
+                Primary.Blue600, Primary.Blue900,
+                Primary.Blue100, Accent.LightBlue200,
+                TextShade.WHITE
+            );
 
             _mechanicService = mechanicService;
             _mechanic = mechanic;
