@@ -6,7 +6,7 @@ A Windows desktop application to manage an auto‐service garage: track cars, me
 
 ## 🚗 Project Overview
 
-**AutoServiceGarage** is a WinForms application built on .NET 7 and Entity Framework Core that enables auto‐service shops to:
+**AutoServiceGarage** is a WinForms application built on .NET 8 and Entity Framework Core that enables auto‐service shops to:
 
 - 📋 **Manage Mechanics & Cars**  
 - 🔧 **Log Repairs** (date, description, cost, assigned mechanic & car)  
@@ -21,7 +21,7 @@ A Windows desktop application to manage an auto‐service garage: track cars, me
 
 ## 🛠️ Tech Stack
 
-- **.NET 7** / C# / WinForms  
+- **.NET 8** / C# / WinForms  
 - **Entity Framework Core** (SQL Server LocalDB)  
 - **MaterialSkin** (UI theme)  
 - **QuestPDF** (PDF export)  
