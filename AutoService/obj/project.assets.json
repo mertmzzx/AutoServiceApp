@@ -6986,11 +6986,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Mert\\source\\repos\\AutoServiceGarage\\AutoService\\AutoService.csproj",
+      "projectUniqueName": "D:\\Git\\AutoServiceApp\\AutoService\\AutoService.csproj",
       "projectName": "AutoService",
-      "projectPath": "C:\\Users\\Mert\\source\\repos\\AutoServiceGarage\\AutoService\\AutoService.csproj",
+      "projectPath": "D:\\Git\\AutoServiceApp\\AutoService\\AutoService.csproj",
       "packagesPath": "C:\\Users\\Mert\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Mert\\source\\repos\\AutoServiceGarage\\AutoService\\obj\\",
+      "outputPath": "D:\\Git\\AutoServiceApp\\AutoService\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
