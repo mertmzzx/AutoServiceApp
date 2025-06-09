@@ -82,7 +82,7 @@ namespace AutoService
             MaterialTabControl1.Multiline = true;
             MaterialTabControl1.Name = "MaterialTabControl1";
             MaterialTabControl1.SelectedIndex = 0;
-            MaterialTabControl1.Size = new Size(1337, 610);
+            MaterialTabControl1.Size = new Size(1445, 422);
             MaterialTabControl1.TabIndex = 0;
             // 
             // tabDashboard
@@ -91,7 +91,7 @@ namespace AutoService
             tabDashboard.Location = new Point(4, 29);
             tabDashboard.Name = "tabDashboard";
             tabDashboard.Padding = new Padding(3);
-            tabDashboard.Size = new Size(1329, 577);
+            tabDashboard.Size = new Size(1437, 389);
             tabDashboard.TabIndex = 0;
             tabDashboard.Text = "Dashboard";
             // 
@@ -109,7 +109,7 @@ namespace AutoService
             tblDashboard.RowCount = 2;
             tblDashboard.RowStyles.Add(new RowStyle());
             tblDashboard.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tblDashboard.Size = new Size(1323, 571);
+            tblDashboard.Size = new Size(1431, 383);
             tblDashboard.TabIndex = 0;
             // 
             // grpRevenueByMechanic
@@ -126,7 +126,7 @@ namespace AutoService
             grpRevenueByMechanic.MouseState = MouseState.HOVER;
             grpRevenueByMechanic.Name = "grpRevenueByMechanic";
             grpRevenueByMechanic.Padding = new Padding(14);
-            grpRevenueByMechanic.Size = new Size(771, 541);
+            grpRevenueByMechanic.Size = new Size(836, 353);
             grpRevenueByMechanic.TabIndex = 1;
             grpRevenueByMechanic.Text = "Revenue by Mechanic";
             // 
@@ -148,7 +148,7 @@ namespace AutoService
             revenueChart.Location = new Point(14, 14);
             revenueChart.MatchAxesScreenDataRatio = false;
             revenueChart.Name = "revenueChart";
-            revenueChart.Size = new Size(743, 513);
+            revenueChart.Size = new Size(808, 325);
             revenueChart.TabIndex = 0;
             // 
             // pnlAnalyticsPlaceholder
@@ -161,10 +161,10 @@ namespace AutoService
             pnlAnalyticsPlaceholder.Controls.Add(dtpTo);
             pnlAnalyticsPlaceholder.Controls.Add(btnApplyFilter);
             pnlAnalyticsPlaceholder.Dock = DockStyle.Fill;
-            pnlAnalyticsPlaceholder.Location = new Point(796, 15);
+            pnlAnalyticsPlaceholder.Location = new Point(861, 15);
             pnlAnalyticsPlaceholder.Margin = new Padding(5);
             pnlAnalyticsPlaceholder.Name = "pnlAnalyticsPlaceholder";
-            pnlAnalyticsPlaceholder.Size = new Size(512, 541);
+            pnlAnalyticsPlaceholder.Size = new Size(555, 353);
             pnlAnalyticsPlaceholder.TabIndex = 2;
             // 
             // btnResetFilter
@@ -251,7 +251,7 @@ namespace AutoService
             tabMechanics.Location = new Point(4, 29);
             tabMechanics.Name = "tabMechanics";
             tabMechanics.Padding = new Padding(3);
-            tabMechanics.Size = new Size(1311, 530);
+            tabMechanics.Size = new Size(1419, 553);
             tabMechanics.TabIndex = 0;
             tabMechanics.Text = "Mechanics";
             // 
@@ -355,7 +355,7 @@ namespace AutoService
             tabRepairs.Location = new Point(4, 29);
             tabRepairs.Name = "tabRepairs";
             tabRepairs.Padding = new Padding(3);
-            tabRepairs.Size = new Size(1311, 530);
+            tabRepairs.Size = new Size(1437, 343);
             tabRepairs.TabIndex = 1;
             tabRepairs.Text = "Repairs";
             // 
@@ -466,7 +466,7 @@ namespace AutoService
             tabHistory.Location = new Point(4, 29);
             tabHistory.Name = "tabHistory";
             tabHistory.Padding = new Padding(3);
-            tabHistory.Size = new Size(1311, 530);
+            tabHistory.Size = new Size(1419, 553);
             tabHistory.TabIndex = 2;
             tabHistory.Text = "Service History";
             // 
@@ -594,7 +594,7 @@ namespace AutoService
             MaterialTabSelector1.Location = new Point(3, 64);
             MaterialTabSelector1.MouseState = MouseState.HOVER;
             MaterialTabSelector1.Name = "MaterialTabSelector1";
-            MaterialTabSelector1.Size = new Size(1337, 48);
+            MaterialTabSelector1.Size = new Size(1445, 48);
             MaterialTabSelector1.TabIndex = 0;
             MaterialTabSelector1.Text = "materialTabSelector1";
             // 
@@ -602,7 +602,7 @@ namespace AutoService
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1343, 725);
+            ClientSize = new Size(1451, 537);
             Controls.Add(MaterialTabControl1);
             Controls.Add(MaterialTabSelector1);
             FormBorderStyle = FormBorderStyle.FixedSingle;

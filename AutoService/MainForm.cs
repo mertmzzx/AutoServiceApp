@@ -358,9 +358,6 @@ namespace AutoService
 
         private async void btnAddRepair_Click(object sender, EventArgs e)
         {
-            if (cmbCars.SelectedValue is not int carId)
-                return;
-
             using var dlg = new AddRepairForm(_recordService, _mechService, _carService);
 
             if (dlg.ShowDialog() == DialogResult.OK)

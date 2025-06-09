@@ -481,7 +481,6 @@ D:\Git\AutoServiceApp\AutoService\bin\Debug\net8.0-windows\runtimes\browser\lib\
 D:\Git\AutoServiceApp\AutoService\obj\Debug\net8.0-windows\AutoService.csproj.AssemblyReference.cache
 D:\Git\AutoServiceApp\AutoService\obj\Debug\net8.0-windows\AutoService.AddMechanicForm.resources
 D:\Git\AutoServiceApp\AutoService\obj\Debug\net8.0-windows\AutoService.AddRepairForm.resources
-D:\Git\AutoServiceApp\AutoService\obj\Debug\net8.0-windows\AutoService.Form1.resources
 D:\Git\AutoServiceApp\AutoService\obj\Debug\net8.0-windows\AutoService.MainForm.resources
 D:\Git\AutoServiceApp\AutoService\obj\Debug\net8.0-windows\AutoService.csproj.GenerateResource.cache
 D:\Git\AutoServiceApp\AutoService\obj\Debug\net8.0-windows\AutoService.GeneratedMSBuildEditorConfig.editorconfig
