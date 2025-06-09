@@ -2,6 +2,8 @@
 using AutoService.Services;
 using MaterialSkin;
 using MaterialSkin.Controls;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace AutoService
 {
@@ -9,11 +11,11 @@ namespace AutoService
     {
         private readonly IMechanicService _mechanicService;
         private Mechanic? _mechanic;
+        private readonly ErrorProvider _errors = new ErrorProvider();
 
         public AddMechanicForm(IMechanicService mechanicService, Mechanic? mechanic = null)
         {
             InitializeComponent();
-
             var mgr = MaterialSkinManager.Instance;
             mgr.AddFormToManage(this);
             mgr.Theme = MaterialSkinManager.Themes.LIGHT;  
@@ -25,6 +27,14 @@ namespace AutoService
 
             _mechanicService = mechanicService;
             _mechanic = mechanic;
+
+            _errors.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+
+            txtName.Validating += TxtName_Validating;
+            txtName.TextChanged += (s, e) => btnSave.Enabled = ValidateChildren();
+
+            
+            btnSave.Enabled = false;
 
             if (_mechanic != null)
             {
@@ -39,6 +49,26 @@ namespace AutoService
             }
         }
 
+        private void TxtName_Validating(object sender, CancelEventArgs e)
+        {
+            var mech = new Mechanic { Name = txtName.Text.Trim() };
+
+            var ctx = new ValidationContext(mech) { MemberName = nameof(Mechanic.Name) };
+
+            try
+            {
+                Validator.ValidateProperty(mech.Name, ctx);
+
+                _errors.SetError(txtName, "");
+            }
+            catch (ValidationException ex)
+            {
+                _errors.SetError(txtName, ex.Message);
+                e.Cancel = true;    
+            }
+        }
+
+
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
@@ -46,34 +76,29 @@ namespace AutoService
 
         private async void btnSave_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtName.Text))
+            // this will trigger all Validating handlers
+            if (!ValidateChildren())
             {
-                MessageBox.Show("Name is required.", "Validation Error",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Please fix the highlighted errors before saving.",
+                    "Validation Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
                 return;
             }
 
-            if (_mechanic == null)
+            // now safe to build your Mechanic and call service
+            var mech = new Mechanic
             {
-                // Create
-                var newMechanic = new Mechanic
-                {
-                    Name = txtName.Text.Trim(),
-                    Phone = txtPhone.Text.Trim()
-                };
-                await _mechanicService.AddAsync(newMechanic);
-            }
-            else
-            {
-                // Update
-                _mechanic.Name = txtName.Text.Trim();
-                _mechanic.Phone = txtPhone.Text.Trim();
-                await _mechanicService.UpdateAsync(_mechanic);
-            }
+                Name = txtName.Text.Trim(),
+                Phone = txtPhone.Text.Trim() 
+            };
 
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            await _mechanicService.AddAsync(mech);
+            DialogResult = DialogResult.OK;
         }
+
 
         private async void btnCancel_Click(object sender, EventArgs e)
         {

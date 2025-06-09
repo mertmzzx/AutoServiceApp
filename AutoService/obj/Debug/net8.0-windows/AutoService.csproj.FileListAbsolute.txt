@@ -232,7 +232,6 @@ C:\Users\Mert\source\repos\AutoServiceGarage\AutoService\bin\Debug\net8.0-window
 C:\Users\Mert\source\repos\AutoServiceGarage\AutoService\obj\Debug\net8.0-windows\AutoService.csproj.AssemblyReference.cache
 C:\Users\Mert\source\repos\AutoServiceGarage\AutoService\obj\Debug\net8.0-windows\AutoService.AddMechanicForm.resources
 C:\Users\Mert\source\repos\AutoServiceGarage\AutoService\obj\Debug\net8.0-windows\AutoService.AddRepairForm.resources
-C:\Users\Mert\source\repos\AutoServiceGarage\AutoService\obj\Debug\net8.0-windows\AutoService.Form1.resources
 C:\Users\Mert\source\repos\AutoServiceGarage\AutoService\obj\Debug\net8.0-windows\AutoService.csproj.GenerateResource.cache
 C:\Users\Mert\source\repos\AutoServiceGarage\AutoService\obj\Debug\net8.0-windows\AutoService.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Mert\source\repos\AutoServiceGarage\AutoService\obj\Debug\net8.0-windows\AutoService.AssemblyInfoInputs.cache
@@ -245,3 +244,5 @@ C:\Users\Mert\source\repos\AutoServiceGarage\AutoService\obj\Debug\net8.0-window
 C:\Users\Mert\source\repos\AutoServiceGarage\AutoService\obj\Debug\net8.0-windows\AutoService.pdb
 C:\Users\Mert\source\repos\AutoServiceGarage\AutoService\obj\Debug\net8.0-windows\AutoService.genruntimeconfig.cache
 C:\Users\Mert\source\repos\AutoServiceGarage\AutoService\obj\Debug\net8.0-windows\ref\AutoService.dll
+C:\Users\Mert\source\repos\AutoServiceGarage\AutoService\bin\Debug\net8.0-windows\AutoService.dll.config
+C:\Users\Mert\source\repos\AutoServiceGarage\AutoService\obj\Debug\net8.0-windows\AutoService.MainForm.resources

@@ -13,7 +13,6 @@ namespace AutoService
         [STAThread]
         static void Main()
         {
-            // 1) Build the Host (reads appsettings.json & sets up DI container)
             var host = Host.CreateDefaultBuilder()
                 .ConfigureAppConfiguration((ctx, cfg) =>
                 {
@@ -21,7 +20,6 @@ namespace AutoService
                 })
                 .ConfigureServices((ctx, services) =>
                 {
-                    // 2) Register DbContext
                     services.AddDbContext<GarageDbContext>(options =>
                         options.UseSqlServer(
                             ctx.Configuration.GetConnectionString("DefaultConnection")
@@ -33,16 +31,15 @@ namespace AutoService
                     services.AddScoped<IServiceRecordService, ServiceRecordService>();
                     services.AddScoped<IExportService ,ExportService>();
 
-                    // 3) Register your main form so it can get DI-injected
-                    services.AddScoped<Form1>();
+                    services.AddScoped<MainForm>();
                 })
                 .Build();
 
             QuestPDF.Settings.License = LicenseType.Community;
-            // 4) Initialize WinForms and run the main form from the DI container
+
             ApplicationConfiguration.Initialize();
             using var scope = host.Services.CreateScope();
-            var form = scope.ServiceProvider.GetRequiredService<Form1>();
+            var form = scope.ServiceProvider.GetRequiredService<MainForm>();
             Application.Run(form);
         }
     }

@@ -2,6 +2,8 @@
 using AutoService.Services;
 using MaterialSkin;
 using MaterialSkin.Controls;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace AutoService
 {
@@ -11,6 +13,7 @@ namespace AutoService
         private readonly IMechanicService _mechSvc;
         private readonly ICarService _carSvc;
         private readonly int _carId;
+        private readonly ErrorProvider _errors = new ErrorProvider();
 
         public AddRepairForm(
             IServiceRecordService recordSvc,
@@ -29,6 +32,26 @@ namespace AutoService
                 TextShade.WHITE
             );
 
+            // never let the icon blink
+            _errors.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+
+            // wire up per-field validation
+            dtpDate.Validating += DtpDate_Validating;
+            txtDescription.Validating += TxtDescription_Validating;
+            nudCost.Validating += NumCost_Validating;
+            cmbMechanics.Validating += CmbMechanic_Validating;
+            cmbExistingCars.Validating += CmbCarSelection_Validating;
+
+            // whenever any field changes, re–enable Save if all are valid
+            dtpDate.ValueChanged += (s, e) => btnSave.Enabled = ValidateChildren();
+            txtDescription.TextChanged += (s, e) => btnSave.Enabled = ValidateChildren();
+            nudCost.ValueChanged += (s, e) => btnSave.Enabled = ValidateChildren();
+            cmbMechanics.SelectedIndexChanged += (s, e) => btnSave.Enabled = ValidateChildren();
+            cmbExistingCars.SelectedIndexChanged += (s, e) => btnSave.Enabled = ValidateChildren();
+
+            // start disabled
+            btnSave.Enabled = false;
+
             _recordSvc = recordSvc;
             _mechSvc = mechSvc;
             _carSvc = carSvc;
@@ -43,6 +66,85 @@ namespace AutoService
 
             dtpDate.Value = DateTime.Today;
         }
+
+        private void DtpDate_Validating(object sender, CancelEventArgs e)
+        {
+            var rec = new ServiceRecord { Date = dtpDate.Value };
+            var ctx = new ValidationContext(rec) { MemberName = nameof(ServiceRecord.Date) };
+
+            try
+            {
+                Validator.ValidateProperty(rec.Date, ctx);
+                _errors.SetError(dtpDate, "");
+            }
+            catch (ValidationException ex)
+            {
+                _errors.SetError(dtpDate, ex.Message);
+                e.Cancel = true;
+            }
+        }
+
+        private void TxtDescription_Validating(object sender, CancelEventArgs e)
+        {
+            var rec = new ServiceRecord { Description = txtDescription.Text.Trim() };
+            var ctx = new ValidationContext(rec) { MemberName = nameof(ServiceRecord.Description) };
+
+            try
+            {
+                Validator.ValidateProperty(rec.Description, ctx);
+                _errors.SetError(txtDescription, "");
+            }
+            catch (ValidationException ex)
+            {
+                _errors.SetError(txtDescription, ex.Message);
+                e.Cancel = true;
+            }
+        }
+
+        private void NumCost_Validating(object sender, CancelEventArgs e)
+        {
+            var rec = new ServiceRecord { Cost = nudCost.Value };
+            var ctx = new ValidationContext(rec) { MemberName = nameof(ServiceRecord.Cost) };
+
+            try
+            {
+                Validator.ValidateProperty(rec.Cost, ctx);
+                _errors.SetError(nudCost, "");
+            }
+            catch (ValidationException ex)
+            {
+                _errors.SetError(nudCost, ex.Message);
+                e.Cancel = true;
+            }
+        }
+
+        private void CmbMechanic_Validating(object sender, CancelEventArgs e)
+        {
+            if (cmbMechanics.SelectedItem is null)
+            {
+                _errors.SetError(cmbMechanics, "Please choose a mechanic");
+                e.Cancel = true;
+            }
+            else
+            {
+                _errors.SetError(cmbMechanics, "");
+            }
+        }
+
+        private void CmbCarSelection_Validating(object sender, CancelEventArgs e)
+        {
+            // if "Existing Car" mode:
+            if (rbExistingCar.Checked && cmbExistingCars.SelectedItem is null)
+            {
+                _errors.SetError(cmbExistingCars, "Please select an existing car");
+                e.Cancel = true;
+            }
+            else
+            {
+                _errors.SetError(cmbExistingCars, "");
+            }
+        }
+
 
         private async Task LoadMechanicsAsync()
         {
@@ -79,52 +181,33 @@ namespace AutoService
 
         private async void btnSave_Click(object sender, EventArgs e)
         {
-            int carId;
-
-            if (rbNewCar.Checked)
+            // run *all* the Validating handlers
+            if (!ValidateChildren())
             {
-                // 1) Create the new car
-                var newCar = new Car
-                {
-                    LicensePlate = txtLicensePlate.Text.Trim(),
-                    VIN = txtVIN.Text.Trim(),
-                    Make = txtMake.Text.Trim(),
-                    Model = txtModel.Text.Trim(),
-                    Year = (int)nudYear.Value
-                };
-                await _carSvc.AddAsync(newCar);
-                carId = newCar.Id;
-            }
-            else
-            {
-                // 2) Use selected existing car
-                if (cmbExistingCars.SelectedValue is not int existingId)
-                {
-                    MessageBox.Show("Please choose a car or add a new car.");
-                    return;
-                }
-                carId = existingId;
-            }
-
-            // 3) Now create the service record for that carId
-            if (cmbMechanics.SelectedValue is not int mechId)
-            {
-                MessageBox.Show("Select a mechanic.");
+                MessageBox.Show(
+                    "Please fix the highlighted errors before saving.",
+                    "Validation Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
                 return;
             }
 
-            var record = new ServiceRecord
+            // map to your entity
+            var rec = new ServiceRecord
             {
-                CarId = carId,
-                MechanicId = mechId,
                 Date = dtpDate.Value,
                 Description = txtDescription.Text.Trim(),
-                Cost = nudCost.Value
+                Cost = nudCost.Value,
+                MechanicId = ((Mechanic)cmbMechanics.SelectedItem).Id,
+                CarId = ((Car)cmbExistingCars.SelectedItem).Id
+                // …or handle NewCar fields…
             };
-            await _recordSvc.AddAsync(record);
 
+            await _recordSvc.AddAsync(rec);
             DialogResult = DialogResult.OK;
         }
+
 
 
         private void btnCancel_Click(object sender, EventArgs e)
