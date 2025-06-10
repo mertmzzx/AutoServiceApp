@@ -39,6 +39,10 @@ namespace AutoService
 
             ApplicationConfiguration.Initialize();
             using var scope = host.Services.CreateScope();
+            
+            var db = scope.ServiceProvider.GetRequiredService<GarageDbContext>();
+            db.Database.Migrate();
+            
             var form = scope.ServiceProvider.GetRequiredService<MainForm>();
             Application.Run(form);
         }
